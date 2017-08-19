@@ -1,13 +1,30 @@
 <template>
   <v-app id="example-2" toolbar>
-    <v-navigation-drawer permanent class="hidden-sm-and-down">
-      <v-toolbar flat>
-        <v-list>
-          <v-list-tile tag="div"></v-list-tile>
-        </v-list>
-      </v-toolbar>
-      <v-divider></v-divider>
-      <v-list dense class="pt-0">
+    <v-navigation-drawer
+      temporary
+      v-model="drawer"
+      :mini-variant.sync="mini"
+      light
+      overflow
+      absolute
+    >
+      <v-list class="pa-1">
+        <v-list-tile avatar tag="div">
+          <v-list-tile-avatar>
+            <img src="https://randomuser.me/api/portraits/men/85.jpg" />
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>John Leider</v-list-tile-title>
+          </v-list-tile-content>
+          <v-list-tile-action>
+            <v-btn icon dark @click.native.stop="mini = !mini">
+              <v-icon>chevron_left</v-icon>
+            </v-btn>
+          </v-list-tile-action>
+        </v-list-tile>
+      </v-list>
+      <v-list class="pt-0" dense>
+        <v-divider></v-divider>
         <v-list-tile v-for="item in navBarLinks" :key="item.title" :to="item.link">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -18,19 +35,29 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar class="primary" dark>
+    <v-toolbar fixed class="primary" dark>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer" class="hidden-sm-and-up"></v-toolbar-side-icon>
       <v-toolbar-title><strong>Warwickshire CCVI</strong></v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-item>
-        <v-btn flat>
-          <v-icon left light>lock_open</v-icon>
-          Log in
+      <v-toolbar-items>
+        <v-btn flat v-for="item in navBarLinks" :key="item.title" :to="item.link">
+          <v-icon left>{{ item.icon }}</v-icon>
+          {{ item.title }}
         </v-btn>
+      </v-toolbar-items>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
         <v-btn flat>
-          <v-icon left light>face</v-icon>
-          Register
+          <v-icon left>lock_open</v-icon>
+          Sign In
         </v-btn>
-      </v-toolbar-item>
+      </v-toolbar-items>
+      <v-toolbar-items>
+      <v-btn flat>
+        <v-icon left>face</v-icon>
+        Sign Up
+      </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <main>
       <v-container fluid>
@@ -44,9 +71,7 @@
   export default {
     data () {
       return {
-        clipped: false,
-        drawer: true,
-        fixed: false,
+        drawer: null,
         navBarLinks: [
           { icon: 'home', title: 'Home', link: '/' },
           { icon: 'home', title: 'Squad', link: '/squad' },
@@ -56,10 +81,9 @@
           { icon: 'home', title: 'Contact Us', link: 'contact-us' },
           { icon: 'home', title: 'Sponsor', link: 'sponsor' }
         ],
-        miniVariant: false,
-        right: true,
-        rightDrawer: false,
-        title: 'Vuetify.js'
+        title: 'WCCVI',
+        mini: false,
+        right: null
       }
     }
   }
